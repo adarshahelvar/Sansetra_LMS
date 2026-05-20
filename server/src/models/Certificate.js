@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const enrollmentSchema = new mongoose.Schema(
+const certificateSchema = new mongoose.Schema(
   {
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,14 +12,11 @@ const enrollmentSchema = new mongoose.Schema(
       ref: "Course",
     },
 
-    purchaseDate: {
-      type: Date,
-      default: Date.now,
-    },
+    certificateUrl: String,
   },
   {
     timestamps: true,
   },
 );
 
-export default mongoose.model("Enrollment", enrollmentSchema);
+export default mongoose.model("Certificate", certificateSchema);

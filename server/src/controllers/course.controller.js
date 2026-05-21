@@ -88,8 +88,16 @@ export const getCourseDetails = asyncHandler(async (req, res) => {
     .populate({
       path: "topics",
 
+      options: {
+        sort: { order: 1 },
+      },
+
       populate: {
         path: "videos",
+
+        options: {
+          sort: { order: 1 },
+        },
       },
     })
 

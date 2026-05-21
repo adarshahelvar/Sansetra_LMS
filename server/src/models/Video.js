@@ -5,6 +5,7 @@ const videoSchema = new mongoose.Schema(
     topicId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Topic",
+      required: true,
     },
 
     title: {
@@ -14,6 +15,7 @@ const videoSchema = new mongoose.Schema(
 
     description: {
       type: String,
+      default: "",
     },
 
     videoUrl: {
@@ -23,10 +25,17 @@ const videoSchema = new mongoose.Schema(
 
     videoId: {
       type: String,
+      default: "",
     },
 
     duration: {
       type: Number,
+      default: 0,
+    },
+
+    order: {
+      type: Number,
+      default: 1,
     },
 
     isFreePreview: {

@@ -24,7 +24,8 @@
     "mongoose": "^9.6.2",
     "morgan": "^1.10.1",
     "nodemailer": "^8.0.7",
-    "otp-generator": "^4.0.1"
+    "otp-generator": "^4.0.1",
+    "razorpay": "^2.9.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

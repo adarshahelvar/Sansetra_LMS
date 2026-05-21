@@ -5,16 +5,29 @@ const enrollmentSchema = new mongoose.Schema(
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
+      required: true,
     },
 
-    purchaseDate: {
+    paymentId: {
+      type: String,
+      default: "",
+    },
+
+    enrollmentDate: {
       type: Date,
       default: Date.now,
+    },
+
+    status: {
+      type: String,
+      enum: ["pending", "active", "expired"],
+      default: "active",
     },
   },
   {

@@ -51,3 +51,26 @@ export const markVideoCompleted = asyncHandler(async (req, res) => {
     progress,
   });
 });
+
+export const getProgress = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
+
+  const progress = await Progress.findOne({
+    studentId: req.user._id,
+    courseId,
+  })
+
+    .populate("lastWatchedVideo");
+
+  if (!progress) {
+    return res.json({
+      percentage: 0,
+
+      lastWatchedVideo: null,
+
+      completedVideos: [],
+    });
+  }
+
+  res.json(progress);
+});

@@ -6,9 +6,7 @@ import api from "../../api/axios";
 
 function Login() {
   const navigate = useNavigate();
-
   const { login } = useAuth();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",

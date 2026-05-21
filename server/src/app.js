@@ -8,6 +8,7 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import userRoutes from "./routes/user.routes.js";
 import courseRoutes from "./routes/course.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
+import progressRoutes from "./routes/progress.routes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/progress", progressRoutes);
 app.use(errorMiddleware);
 
 export default app;

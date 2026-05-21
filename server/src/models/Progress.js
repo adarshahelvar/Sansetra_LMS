@@ -5,11 +5,13 @@ const progressSchema = new mongoose.Schema(
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
+      required: true,
     },
 
     completedVideos: [
@@ -18,6 +20,11 @@ const progressSchema = new mongoose.Schema(
         ref: "Video",
       },
     ],
+
+    lastWatchedVideo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Video",
+    },
 
     percentage: {
       type: Number,

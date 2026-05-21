@@ -5,19 +5,29 @@ const paymentSchema = new mongoose.Schema(
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
+      required: true,
     },
 
-    amount: {
-      type: Number,
+    orderId: {
+      type: String,
     },
 
     paymentId: {
       type: String,
+    },
+
+    signature: {
+      type: String,
+    },
+
+    amount: {
+      type: Number,
     },
 
     status: {

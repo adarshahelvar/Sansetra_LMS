@@ -5,6 +5,12 @@ const courseSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
+    },
+
+    subtitle: {
+      type: String,
+      default: "",
     },
 
     description: {
@@ -14,6 +20,7 @@ const courseSchema = new mongoose.Schema(
 
     thumbnail: {
       type: String,
+      default: "",
     },
 
     price: {
@@ -24,6 +31,7 @@ const courseSchema = new mongoose.Schema(
     instructor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     topics: [
@@ -33,9 +41,24 @@ const courseSchema = new mongoose.Schema(
       },
     ],
 
+    studentsEnrolled: {
+      type: Number,
+      default: 0,
+    },
+
     totalDuration: {
       type: Number,
       default: 0,
+    },
+
+    level: {
+      type: String,
+      enum: ["beginner", "intermediate", "advanced"],
+      default: "beginner",
+    },
+
+    category: {
+      type: String,
     },
 
     isPublished: {

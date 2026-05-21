@@ -9,6 +9,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateToken.js";
+import RefreshToken from "../models/RefreshToken.js";
 
 export const register = asyncHandler(async (req, res) => {
   const { name, email, phone, password, education, address } = req.body;
@@ -109,6 +110,11 @@ export const login = asyncHandler(async (req, res) => {
 
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
+
+  await RefreshToken.create({
+    userId: user._id,
+    token: refreshToken,
+  });
 
   res.status(200).json({
     message: "Login successful",

@@ -7,6 +7,7 @@ import {
   getCourseDetails,
   publishCourse,
   getAllCourses,
+  getCourseContent,
 } from "../controllers/course.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
 import roleMiddleware from "../middleware/role.middleware.js";
@@ -43,5 +44,7 @@ router.put(
   roleMiddleware("admin", "instructor"),
   publishCourse,
 );
+
+router.get("/content/:courseId", authMiddleware, getCourseContent);
 
 export default router;

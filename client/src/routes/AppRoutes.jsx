@@ -9,7 +9,7 @@ import VerifyOTP from "../pages/VerifyOTP/VerifyOTP";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Courses from "../pages/Courses/Courses";
 import CourseDetails from "../pages/CourseDetails/CourseDetails";
-
+import LearnCourse from "../pages/LearnCourse/LearnCourse";
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -22,6 +22,7 @@ function AppRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/course/:id" element={<CourseDetails />} />
+          <Route path="/learn/:courseId" element={<LearnCourse />} />
         </Route>
       </Routes>
     </BrowserRouter>

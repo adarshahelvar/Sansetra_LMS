@@ -137,3 +137,27 @@ export const getAllCourses = asyncHandler(async (req, res) => {
   console.log(courses);
   res.json(courses);
 });
+
+export const getCourseContent = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
+
+  const topics = await Topic.find({
+    courseId,
+  })
+
+    .populate({
+      path: "videos",
+
+      select: "title description duration videoUrl",
+    })
+
+    .sort({
+      order: 1,
+    });
+
+  res.json({
+    success: true,
+
+    topics,
+  });
+});

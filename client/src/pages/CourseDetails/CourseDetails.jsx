@@ -20,7 +20,7 @@ function CourseDetails() {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     fetchCourse();
     checkEnrollment();
@@ -144,7 +144,7 @@ function CourseDetails() {
                 <button
                   className="start-btn"
                   onClick={() => {
-                    navigate(`/watch/${id}`);
+                    navigate(`/learn/${id}`);
                   }}
                 >
                   Start Course

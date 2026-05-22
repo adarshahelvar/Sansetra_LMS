@@ -133,11 +133,7 @@ export const publishCourse = asyncHandler(async (req, res) => {
 });
 
 export const getAllCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find({
-    isPublished: true,
-  })
-
-    .populate("instructor", "name");
-
+  const courses = await Course.find().populate("instructor", "name");
+  console.log(courses);
   res.json(courses);
 });

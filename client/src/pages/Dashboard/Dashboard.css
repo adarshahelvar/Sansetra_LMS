@@ -93,3 +93,18 @@
 
   border-radius: 20px;
 }
+.dashboard-loading {
+  height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 30px;
+
+  background: #030712;
+
+  color: white;
+}

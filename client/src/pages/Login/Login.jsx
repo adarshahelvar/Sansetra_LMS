@@ -24,13 +24,19 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await api.post(
-        "/auth/login",
+      const res = await api.post("/auth/login", formData);
 
-        formData,
-      );
+      const accessToken = res.data.accessToken;
 
-      login(res.data.token);
+      if (!accessToken) {
+        alert("Token not received");
+
+        return;
+      }
+
+      localStorage.setItem("token", accessToken);
+
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       navigate("/dashboard");
     } catch (error) {

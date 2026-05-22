@@ -10,6 +10,8 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Courses from "../pages/Courses/Courses";
 import CourseDetails from "../pages/CourseDetails/CourseDetails";
 import LearnCourse from "../pages/LearnCourse/LearnCourse";
+import AddCourse from "../pages/AddCourse/AddCourse";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -23,6 +25,7 @@ function AppRoutes() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/learn/:courseId" element={<LearnCourse />} />
+          <Route path="/add-course" element={<AddCourse />} />
         </Route>
       </Routes>
     </BrowserRouter>

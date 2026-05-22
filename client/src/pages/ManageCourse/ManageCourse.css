@@ -1,0 +1,203 @@
+.manage-page {
+  min-height: 100vh;
+  background: #030712;
+  color: white;
+  padding: 120px 40px 50px;
+}
+
+.manage-page h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 35px;
+}
+
+/* Top topic input */
+
+.topic-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.topic-section input {
+  flex: 1;
+  height: 55px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: #111827;
+  color: white;
+  padding: 0 20px;
+  font-size: 15px;
+}
+
+.topic-section input::placeholder {
+  color: #94a3b8;
+}
+
+.topic-section button {
+  width: 180px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #0066ff, #00aaff);
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.topic-section button:hover {
+  transform: translateY(-2px);
+}
+
+/* Topic card */
+
+.topic-card {
+  background: #071225;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.topic-card h3 {
+  margin-bottom: 25px;
+  color: #ffffff;
+  font-size: 28px;
+}
+
+/* Existing video */
+
+.existing-video {
+  background: #0f172a;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  color: #cbd5e1;
+  border-left: 4px solid #00aaff;
+}
+
+/* New video form */
+
+.video-card {
+  background: #111827;
+  border-radius: 16px;
+  padding: 25px;
+  margin-top: 25px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.video-card h5 {
+  grid-column: span 2;
+
+  color: #00aaff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.video-card input {
+  height: 55px;
+
+  border: none;
+
+  outline: none;
+
+  border-radius: 10px;
+
+  background: #1e293b;
+
+  color: white;
+
+  padding: 0 18px;
+
+  font-size: 14px;
+}
+
+.video-card input::placeholder {
+  color: #94a3b8;
+}
+
+/* Add video button */
+
+.add-video-btn {
+  width: 100%;
+  height: 55px;
+
+  margin-top: 25px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  transition: 0.3s;
+}
+
+.add-video-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Save button */
+
+.save-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+}
+
+.save-course-btn {
+  width: 250px;
+  height: 60px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: linear-gradient(90deg, #0066ff, #00aaff);
+
+  color: white;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  transition: 0.3s;
+}
+
+.save-course-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .video-card {
+    grid-template-columns: 1fr;
+  }
+
+  .video-card h5 {
+    grid-column: span 1;
+  }
+
+  .topic-section {
+    flex-direction: column;
+  }
+
+  .topic-section button {
+    width: 100%;
+  }
+
+  .save-course-btn {
+    width: 100%;
+  }
+}

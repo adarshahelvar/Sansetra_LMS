@@ -9,6 +9,8 @@ import userRoutes from "./routes/user.routes.js";
 import courseRoutes from "./routes/course.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import progressRoutes from "./routes/progress.routes.js";
+import topicRoutes from "./routes/topic.routes.js";
+import videoRoutes from "./routes/video.routes.js";
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/progress", progressRoutes);
+app.use("/api/topic", topicRoutes);
+app.use("/api/videos", videoRoutes);
 app.use(errorMiddleware);
 
 export default app;

@@ -1,0 +1,49 @@
+.course-details {
+  min-height: 100vh;
+
+  padding: 50px 0;
+
+  background: #030712;
+
+  color: white;
+}
+
+.details-image {
+  width: 100%;
+
+  border-radius: 20px;
+
+  height: 400px;
+
+  object-fit: cover;
+}
+
+.details-card {
+  background: #071225;
+
+  padding: 30px;
+
+  border-radius: 20px;
+}
+
+.details-card h2 {
+  margin-top: 30px;
+
+  color: #00aaff;
+}
+
+.details-card button {
+  margin-top: 25px;
+
+  width: 100%;
+
+  padding: 14px;
+
+  background: linear-gradient(90deg, #0066ff, #00aaff);
+
+  border: none;
+
+  border-radius: 10px;
+
+  color: white;
+}

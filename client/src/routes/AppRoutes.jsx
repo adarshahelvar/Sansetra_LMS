@@ -8,6 +8,7 @@ import Signup from "../pages/Signup/Signup";
 import VerifyOTP from "../pages/VerifyOTP/VerifyOTP";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Courses from "../pages/Courses/Courses";
+import CourseDetails from "../pages/CourseDetails/CourseDetails";
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/course/:id" element={<CourseDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>

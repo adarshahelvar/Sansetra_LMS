@@ -1,0 +1,95 @@
+.dashboard {
+  min-height: 100vh;
+
+  padding: 50px 0;
+
+  background: #030712;
+
+  color: white;
+}
+
+.dashboard h2 {
+  font-size: 35px;
+
+  font-weight: 700;
+}
+
+.dashboard p {
+  color: #94a3b8;
+
+  margin-bottom: 40px;
+}
+
+.dashboard-title {
+  margin-bottom: 20px;
+}
+
+.course-progress-card {
+  padding: 25px;
+
+  background: #071225;
+
+  border-radius: 20px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.course-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+
+  font-size: 18px;
+}
+
+.progress {
+  height: 10px;
+
+  background: #111827;
+
+  border-radius: 20px;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #0066ff, #00aaff);
+
+  height: 100%;
+
+  border-radius: 20px;
+}
+
+.course-bottom {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 20px;
+}
+
+.course-bottom button {
+  background: #008cff;
+
+  border: none;
+
+  padding: 8px 18px;
+
+  border-radius: 8px;
+
+  color: white;
+}
+
+.recommended {
+  margin-top: 50px;
+}
+
+.recommended-card {
+  padding: 25px;
+
+  background: #071225;
+
+  border-radius: 20px;
+}

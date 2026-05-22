@@ -1,5 +1,8 @@
+import "./VerifyOTP.css";
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import api from "../../api/axios";
 
 function VerifyOTP() {
@@ -11,44 +14,50 @@ function VerifyOTP() {
 
   const [otp, setOtp] = useState("");
 
-  const verify = async () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleVerify = async () => {
     try {
-      await api.post(
-        "/auth/verify-otp",
+      setLoading(true);
 
-        {
-          email,
-          otp,
-        },
-      );
+      const res = await api.post("/auth/verify-otp", {
+        email,
+        otp,
+      });
 
-      alert("Verification successful");
+      alert(res.data.message || "Email verified");
 
       navigate("/login");
     } catch (error) {
-      alert("Invalid OTP");
+      alert(error.response?.data?.message || "Invalid OTP");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <h2>Verify OTP</h2>
+        <h2>Verify Email</h2>
 
         <p>
           OTP sent to:
-          {email}
+          <br />
+          <b>{email}</b>
         </p>
 
         <input
+          type="text"
+          placeholder="Enter OTP"
           value={otp}
           onChange={(e) => {
             setOtp(e.target.value);
           }}
-          placeholder="Enter OTP"
         />
 
-        <button onClick={verify}>Verify</button>
+        <button onClick={handleVerify}>
+          {loading ? "Verifying..." : "Verify OTP"}
+        </button>
       </div>
     </div>
   );

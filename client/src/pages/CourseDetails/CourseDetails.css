@@ -47,3 +47,19 @@
 
   color: white;
 }
+
+.start-btn {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+
+  color: white;
+
+  font-weight: 600;
+}

@@ -41,3 +41,15 @@ export const myCourses = asyncHandler(async (req, res) => {
 
   res.json(courses);
 });
+
+export const checkEnrollment = asyncHandler(async (req, res) => {
+  const enrollment = await Enrollment.findOne({
+    studentId: req.user.id,
+
+    courseId: req.params.courseId,
+  });
+
+  res.json({
+    enrolled: !!enrollment,
+  });
+});

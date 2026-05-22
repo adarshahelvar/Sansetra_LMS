@@ -50,29 +50,28 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     });
   }
 
+  const studentId = req.user.id;
+
+  console.log("Student:", studentId);
+
   await Payment.create({
-    studentId: req.user._id,
-
+    studentId,
     courseId,
-
     orderId: razorpay_order_id,
-
     paymentId: razorpay_payment_id,
-
     signature: razorpay_signature,
-
     status: "success",
   });
 
   const alreadyEnrolled = await Enrollment.findOne({
-    studentId: req.user._id,
+    studentId,
 
     courseId,
   });
 
   if (!alreadyEnrolled) {
     await Enrollment.create({
-      studentId: req.user._id,
+      studentId,
 
       courseId,
 
@@ -80,11 +79,20 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 
       status: "active",
     });
+
+    await Course.findByIdAndUpdate(
+      courseId,
+
+      {
+        $inc: {
+          studentsEnrolled: 1,
+        },
+      },
+    );
   }
 
   res.status(200).json({
     success: true,
-
     message: "Payment successful and course unlocked",
   });
 });

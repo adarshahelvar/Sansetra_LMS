@@ -1,8 +1,24 @@
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logos/logo.png";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const logout = () => {
+    localStorage.removeItem("token");
+
+    localStorage.removeItem("user");
+
+    navigate("/");
+
+    window.location.reload();
+  };
+
   return (
     <nav className="navbar navbar-expand-lg custom-navbar">
       <div className="container">
@@ -12,7 +28,7 @@ function Navbar() {
           <img src={logo} alt="Sansetra" className="site-logo" />
         </Link>
 
-        {/* Mobile button */}
+        {/* Mobile */}
 
         <button
           className="navbar-toggler"
@@ -24,7 +40,7 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navMenu">
-          {/* Center Menu */}
+          {/* Existing Menu */}
 
           <ul className="navbar-nav mx-auto nav-center">
             <li className="nav-item">
@@ -64,16 +80,32 @@ function Navbar() {
             </li>
           </ul>
 
-          {/* Buttons */}
-
           <div className="nav-buttons">
-            <Link to="/login">
-              <button className="login-btn">Log In</button>
-            </Link>
+            {token ? (
+              <>
+                {(user?.role === "admin" || user?.role === "instructor") && (
+                  <Link to="/add-course">
+                    <button className="add-course-btn">+ Add Course</button>
+                  </Link>
+                )}
 
-            <Link to="/signup">
-              <button className="signup-btn">Sign Up</button>
-            </Link>
+                <div className="user-box">👤 {user?.name}</div>
+
+                <button className="logout-btn" onClick={logout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <button className="login-btn">Log In</button>
+                </Link>
+
+                <Link to="/signup">
+                  <button className="signup-btn">Sign Up</button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

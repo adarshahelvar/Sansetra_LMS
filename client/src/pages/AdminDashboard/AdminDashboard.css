@@ -292,3 +292,37 @@
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 100px 15px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .monthly-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .course-table,
+  .users-table,
+  .payment-table {
+    overflow-x: auto;
+  }
+
+  .course-table table,
+  .users-table table,
+  .payment-table table {
+    min-width: 800px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .delete-modal {
+    width: 95%;
+  }
+}

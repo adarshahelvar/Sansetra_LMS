@@ -104,3 +104,13 @@
 .start-btn {
   background: linear-gradient(90deg, #9333ea, #7c3aed);
 }
+
+@media (max-width: 768px) {
+  .details-image {
+    height: 250px;
+  }
+
+  .details-card {
+    margin-top: 20px;
+  }
+}

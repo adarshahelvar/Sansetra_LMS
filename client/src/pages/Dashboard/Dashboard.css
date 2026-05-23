@@ -108,3 +108,13 @@
 
   color: white;
 }
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 100px 15px;
+  }
+
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+}

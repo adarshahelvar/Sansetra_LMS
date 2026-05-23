@@ -273,3 +273,17 @@
 
   filter: grayscale(100%);
 }
+
+@media (max-width: 768px) {
+  .manage-page {
+    padding: 100px 15px;
+  }
+
+  .video-card {
+    grid-template-columns: 1fr;
+  }
+
+  .save-course-btn {
+    width: 100%;
+  }
+}

@@ -53,3 +53,13 @@
 
   color: white;
 }
+
+@media (max-width: 768px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-course-card {
+    width: 100%;
+  }
+}

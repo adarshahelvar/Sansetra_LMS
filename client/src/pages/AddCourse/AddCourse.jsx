@@ -36,7 +36,6 @@ function AddCourse() {
         courseData,
       );
 
-      import { toast } from "react-toastify";
       navigate(`/manage-course/${res.data.course._id}`);
     } catch (error) {
       console.log(error);

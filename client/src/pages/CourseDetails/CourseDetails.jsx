@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../api/axios";
 import Loader from "../../components/Loader/Loader";
-import { toast } from "react-toastify";
 
 function CourseDetails() {
   const { id } = useParams();
 
   const [course, setCourse] = useState(null);
-
   const [isEnrolled, setIsEnrolled] = useState(false);
 
   const navigate = useNavigate();
@@ -128,7 +126,8 @@ function CourseDetails() {
     <div className="course-details">
       <div className="container">
         <div className="row">
-          <div className="col-lg-7">
+          <div className="col-lg-7 details-left">
+            {" "}
             <img
               src={
                 course.thumbnail ||
@@ -137,18 +136,43 @@ function CourseDetails() {
               className="details-image"
               alt="course"
             />
+            <div className="course-buttons">
+              {canManage ? (
+                <>
+                  <button
+                    className="edit-btn"
+                    onClick={() => {
+                      navigate(`/manage-course/${id}`);
+                    }}
+                  >
+                    Manage Content
+                  </button>
+
+                  {!course.isPublished && (
+                    <button className="publish-btn" onClick={publishCourse}>
+                      Publish
+                    </button>
+                  )}
+                </>
+              ) : isEnrolled ? (
+                <button
+                  className="start-btn"
+                  onClick={() => {
+                    navigate(`/learn/${id}`);
+                  }}
+                >
+                  Start Course
+                </button>
+              ) : (
+                <button className="buy-btn" onClick={handlePurchase}>
+                  Buy Course
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="col-lg-5">
             <div className="details-card">
-              <h1>{course.title}</h1>
-
-              <h5>{course.subtitle}</h5>
-
-              <p>{course.description}</p>
-
-              <hr />
-
               <p>
                 Instructor:
                 <b>{course.instructor?.name}</b>
@@ -171,39 +195,11 @@ function CourseDetails() {
 
               <h2>₹{course.price}</h2>
 
-              <div className="course-buttons">
-                {canManage ? (
-                  <>
-                    <button
-                      className="edit-btn"
-                      onClick={() => {
-                        navigate(`/manage-course/${id}`);
-                      }}
-                    >
-                      Manage Content
-                    </button>
+              <h1>{course.title}</h1>
 
-                    {!course.isPublished && (
-                      <button className="publish-btn" onClick={publishCourse}>
-                        Publish
-                      </button>
-                    )}
-                  </>
-                ) : isEnrolled ? (
-                  <button
-                    className="start-btn"
-                    onClick={() => {
-                      navigate(`/learn/${id}`);
-                    }}
-                  >
-                    Start Course
-                  </button>
-                ) : (
-                  <button className="buy-btn" onClick={handlePurchase}>
-                    Buy Course
-                  </button>
-                )}
-              </div>
+              <h5>{course.subtitle}</h5>
+              <hr />
+              <p>{course.description}</p>
             </div>
           </div>
         </div>

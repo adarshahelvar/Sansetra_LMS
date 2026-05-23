@@ -3,7 +3,12 @@ import express from "express";
 import authMiddleware from "../middleware/auth.middleware.js";
 import roleMiddleware from "../middleware/role.middleware.js";
 
-import { checkEnrollment, continueWatching, myCourses } from "../controllers/user.controller.js";
+import {
+  checkEnrollment,
+  continueWatching,
+  getAdminDashboard,
+  myCourses,
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -25,4 +30,15 @@ router.get("/continue-watching", authMiddleware, continueWatching);
 router.get("/my-courses", authMiddleware, myCourses);
 
 router.get("/check-enrollment/:courseId", authMiddleware, checkEnrollment);
+
+router.get(
+  "/admin-dashboard",
+
+  authMiddleware,
+
+  roleMiddleware("admin", "instructor"),
+
+  getAdminDashboard,
+);
+
 export default router;

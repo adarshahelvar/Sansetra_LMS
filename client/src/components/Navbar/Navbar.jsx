@@ -78,6 +78,15 @@ function Navbar() {
                 About Us
               </Link>
             </li>
+            {user?.role === "admin" || user?.role === "instructor" ? (
+              <Link className="nav-link" to="/admin-dashboard">
+                Dashboard
+              </Link>
+            ) : (
+              <Link className="nav-link" to="/dashboard">
+                Dashboard
+              </Link>
+            )}
           </ul>
 
           <div className="nav-buttons">

@@ -1,8 +1,10 @@
 import "./CourseDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
 import api from "../../api/axios";
+import Loader from "../../components/Loader/Loader";
+import { toast } from "react-toastify";
 
 function CourseDetails() {
   const { id } = useParams();
@@ -49,7 +51,7 @@ function CourseDetails() {
     try {
       await api.put(`/course/publish/${id}`);
 
-      alert("Course published successfully");
+      toast.success("Course published successfully");
       navigate("/courses");
       fetchCourse();
     } catch (error) {
@@ -98,8 +100,7 @@ function CourseDetails() {
               },
             );
 
-            alert("Course purchased successfully");
-
+            toast.success("Course purchased successfully");
             navigate("/dashboard");
           } catch (error) {
             console.log(error);
@@ -116,7 +117,11 @@ function CourseDetails() {
   };
 
   if (!course) {
-    return <div className="loading">Loading...</div>;
+    return (
+      <div className="loading">
+        <Loader />
+      </div>
+    );
   }
 
   return (

@@ -1,5 +1,5 @@
 import "./ManageCourse.css";
-
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -89,7 +89,7 @@ function ManageCourse() {
         }
       }
 
-      alert("Course content saved successfully");
+      toast.success("Course content saved successfully");
 
       setContentSaved(true);
 
@@ -99,7 +99,7 @@ function ManageCourse() {
     } catch (error) {
       console.log(error);
 
-      alert("Saving failed");
+      toast.error("Saving failed");
     }
   };
 
@@ -107,7 +107,7 @@ function ManageCourse() {
     try {
       await api.put(`/course/publish/${courseId}`);
 
-      alert("Course published successfully");
+      toast.success("Course published successfully");
 
       navigate("/courses");
     } catch (error) {

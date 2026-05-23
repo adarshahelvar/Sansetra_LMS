@@ -34,7 +34,7 @@ function Signup() {
         },
       });
     } catch (error) {
-      alert(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || "Signup failed");
     }
   };
 

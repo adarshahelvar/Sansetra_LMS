@@ -1,5 +1,5 @@
 import "./AddCourse.css";
-
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,13 +36,12 @@ function AddCourse() {
         courseData,
       );
 
-      alert("Course created successfully");
-
+      import { toast } from "react-toastify";
       navigate(`/manage-course/${res.data.course._id}`);
     } catch (error) {
       console.log(error);
 
-      alert("Failed to create course");
+      toast.error("Failed to create course");
     }
   };
 

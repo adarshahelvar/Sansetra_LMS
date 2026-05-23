@@ -1,5 +1,5 @@
 import "./VerifyOTP.css";
-
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -25,11 +25,11 @@ function VerifyOTP() {
         otp,
       });
 
-      alert(res.data.message || "Email verified");
+      toast.success(res.data.message || "Email verified");
 
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid OTP");
+      toast.error(error.response?.data?.message || "Invalid OTP");
     } finally {
       setLoading(false);
     }

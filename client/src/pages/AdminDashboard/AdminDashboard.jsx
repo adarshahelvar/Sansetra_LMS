@@ -1,15 +1,25 @@
 import "./AdminDashboard.css";
 
 import { useEffect, useState } from "react";
-
 import api from "../../api/axios";
-
 import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
   const navigate = useNavigate();
 
   const [data, setData] = useState(null);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const [verificationCode, setVerificationCode] = useState("");
+
+  const [userCode, setUserCode] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [deleteStep, setDeleteStep] = useState(1);
 
   useEffect(() => {
     loadDashboard();
@@ -25,9 +35,33 @@ function AdminDashboard() {
     }
   };
 
-  const deleteCourse = async (id) => {
+  const openDeleteModal = (id) => {
+    const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    setVerificationCode(randomCode);
+
+    setSelectedCourse(id);
+
+    setUserCode("");
+
+    setErrorMessage("");
+
+    setDeleteStep(1);
+
+    setShowDeleteModal(true);
+  };
+
+  const deleteCourse = async () => {
+    if (userCode !== verificationCode) {
+      setErrorMessage("Verification code incorrect");
+
+      return;
+    }
+
     try {
-      await api.delete(`/course/delete/${id}`);
+      await api.delete(`/course/delete/${selectedCourse}`);
+
+      setShowDeleteModal(false);
 
       loadDashboard();
     } catch (error) {
@@ -36,7 +70,7 @@ function AdminDashboard() {
   };
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <div className="loading-screen">Loading...</div>;
   }
 
   return (
@@ -74,13 +108,15 @@ function AdminDashboard() {
           <h3>Monthly Revenue</h3>
 
           <div className="monthly-grid">
-            {Object.entries(data.monthlyRevenue).map(([month, value]) => (
-              <div key={month} className="month-card">
-                <h5>{month}</h5>
+            {Object.entries(data.monthlyRevenue)
 
-                <h2>₹{value}</h2>
-              </div>
-            ))}
+              .map(([month, value]) => (
+                <div key={month} className="month-card">
+                  <h5>{month}</h5>
+
+                  <h2>₹{value}</h2>
+                </div>
+              ))}
           </div>
         </div>
 
@@ -91,13 +127,9 @@ function AdminDashboard() {
             <thead>
               <tr>
                 <th>Course</th>
-
                 <th>Students</th>
-
                 <th>Status</th>
-
                 <th>Price</th>
-
                 <th>Action</th>
               </tr>
             </thead>
@@ -125,7 +157,7 @@ function AdminDashboard() {
                     <button
                       className="delete-btn"
                       onClick={() => {
-                        deleteCourse(course._id);
+                        openDeleteModal(course._id);
                       }}
                     >
                       Delete
@@ -136,6 +168,110 @@ function AdminDashboard() {
             </tbody>
           </table>
         </div>
+
+        {showDeleteModal && (
+          <div className="delete-overlay">
+            <div className="delete-modal">
+              <h2>Delete Course ⚠️</h2>
+
+              {/* STEP 1 */}
+
+              {deleteStep === 1 && (
+                <>
+                  <p>Are you sure you want to delete this course?</p>
+
+                  <div className="modal-buttons">
+                    <button
+                      className="cancel-btn"
+                      onClick={() => {
+                        setShowDeleteModal(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="confirm-delete-btn"
+                      onClick={() => {
+                        setDeleteStep(2);
+                      }}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* STEP 2 */}
+
+              {deleteStep === 2 && (
+                <>
+                  <p>Deleted courses cannot be recovered.</p>
+
+                  <p>Do you still want to continue?</p>
+
+                  <div className="modal-buttons">
+                    <button
+                      className="cancel-btn"
+                      onClick={() => {
+                        setShowDeleteModal(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="confirm-delete-btn"
+                      onClick={() => {
+                        setDeleteStep(3);
+                      }}
+                    >
+                      Yes Continue
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* STEP 3 */}
+
+              {deleteStep === 3 && (
+                <>
+                  <p>Enter this verification code:</p>
+
+                  <div className="verification-box">{verificationCode}</div>
+
+                  <input
+                    placeholder="Enter verification code"
+                    value={userCode}
+                    onChange={(e) => {
+                      setUserCode(e.target.value);
+                    }}
+                  />
+
+                  {errorMessage && <p className="error-text">{errorMessage}</p>}
+
+                  <div className="modal-buttons">
+                    <button
+                      className="cancel-btn"
+                      onClick={() => {
+                        setShowDeleteModal(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="confirm-delete-btn"
+                      onClick={deleteCourse}
+                    >
+                      Delete Course
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

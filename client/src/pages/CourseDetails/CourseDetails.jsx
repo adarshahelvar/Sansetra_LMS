@@ -58,6 +58,22 @@ function CourseDetails() {
   };
 
   const handlePurchase = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      localStorage.setItem(
+        "redirectAfterLogin",
+
+        `/course/${id}`,
+      );
+
+      toast.info("Please login first");
+
+      navigate("/login");
+
+      return;
+    }
+
     try {
       const res = await api.post(
         "/payment/create-order",
@@ -99,6 +115,7 @@ function CourseDetails() {
             );
 
             toast.success("Course purchased successfully");
+
             navigate("/dashboard");
           } catch (error) {
             console.log(error);

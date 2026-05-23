@@ -39,7 +39,15 @@ function Login() {
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/dashboard");
+      const redirectPath = localStorage.getItem("redirectAfterLogin");
+
+      if (redirectPath) {
+        localStorage.removeItem("redirectAfterLogin");
+
+        navigate(redirectPath);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }

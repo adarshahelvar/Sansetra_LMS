@@ -1,7 +1,7 @@
 import "./ManageCourse.css";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 
 function ManageCourse() {
@@ -11,10 +11,11 @@ function ManageCourse() {
   const [topicTitle, setTopicTitle] = useState("");
 
   const [videoForms, setVideoForms] = useState({});
-
+  const [contentSaved, setContentSaved] = useState(false);
   useEffect(() => {
     loadTopics();
   }, []);
+  const navigate = useNavigate();
 
   const loadTopics = async () => {
     try {
@@ -90,6 +91,8 @@ function ManageCourse() {
 
       alert("Course content saved successfully");
 
+      setContentSaved(true);
+
       setVideoForms({});
 
       loadTopics();
@@ -102,13 +105,13 @@ function ManageCourse() {
 
   const publishCourse = async () => {
     try {
-      const res = await api.put(`/course/publish/${courseId}`);
+      await api.put(`/course/publish/${courseId}`);
 
-      alert(res.data.message);
+      alert("Course published successfully");
+
+      navigate("/courses");
     } catch (error) {
       console.log(error);
-
-      alert("Publishing failed");
     }
   };
 
@@ -214,7 +217,15 @@ function ManageCourse() {
         ))}
 
         <div className="save-section">
-          <button className="publish-btn" onClick={publishCourse}>
+          <button
+            className={`publish-btn
+
+${!contentSaved ? "disabled-btn" : ""}
+
+`}
+            disabled={!contentSaved}
+            onClick={publishCourse}
+          >
             Publish Course
           </button>
 

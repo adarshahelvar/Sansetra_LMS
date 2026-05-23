@@ -265,3 +265,11 @@
 .delete-video-btn:hover {
   background: #ef4444;
 }
+
+.disabled-btn {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  filter: grayscale(100%);
+}

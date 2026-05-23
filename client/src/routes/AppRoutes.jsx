@@ -16,6 +16,7 @@ import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import AdminRoute from "../components/ProtectedRoute/AdminRoute";
+import NotFound from "../pages/NotFound/NotFound";
 
 function AppRoutes() {
   return (
@@ -85,6 +86,7 @@ function AppRoutes() {
             }
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

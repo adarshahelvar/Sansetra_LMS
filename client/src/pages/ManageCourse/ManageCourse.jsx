@@ -146,7 +146,22 @@ function ManageCourse() {
             {(videoForms[topic._id] || []).map((video, index) => (
               <div key={index} className="video-card">
                 <h5>Video {index + 1}</h5>
+                <button
+                  className="delete-video-btn"
+                  onClick={() => {
+                    const updated = [...(videoForms[topic._id] || [])];
 
+                    updated.splice(index, 1);
+
+                    setVideoForms({
+                      ...videoForms,
+
+                      [topic._id]: updated,
+                    });
+                  }}
+                >
+                  ✕ Remove
+                </button>
                 <input
                   placeholder="Video title"
                   value={video.title}

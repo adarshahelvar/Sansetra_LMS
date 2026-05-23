@@ -50,7 +50,7 @@ function CourseDetails() {
       await api.put(`/course/publish/${id}`);
 
       alert("Course published successfully");
-
+      navigate("/courses");
       fetchCourse();
     } catch (error) {
       console.log(error);

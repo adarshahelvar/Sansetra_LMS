@@ -31,18 +31,29 @@ export const getProfile = asyncHandler(async (req, res) => {
 });
 
 export const myCourses = asyncHandler(async (req, res) => {
-  const courses = await Enrollment.find({
-    studentId: req.user._id,
-  }).populate({
-    path: "courseId",
-    populate: {
-      path: "instructor",
-      select: "name",
-    },
-  });
+  const enrollments = await Enrollment.find({
+    studentId: req.user.id,
+  })
 
-  res.json(courses);
+    .populate({
+      path: "courseId",
+
+      populate: {
+        path: "instructor",
+
+        select: "name",
+      },
+    });
+
+  const courses = enrollments.map((item) => item.courseId);
+
+  res.json({
+    success: true,
+
+    courses,
+  });
 });
+
 
 export const checkEnrollment = asyncHandler(async (req, res) => {
   const enrollment = await Enrollment.findOne({
@@ -128,3 +139,4 @@ export const getAdminDashboard = asyncHandler(async (req, res) => {
     courseAnalytics,
   });
 });
+

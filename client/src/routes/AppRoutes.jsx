@@ -13,6 +13,7 @@ import LearnCourse from "../pages/LearnCourse/LearnCourse";
 import AddCourse from "../pages/AddCourse/AddCourse";
 import ManageCourse from "../pages/ManageCourse/ManageCourse";
 import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
+import MyCourses from "../pages/MyCourses/MyCourses";
 
 function AppRoutes() {
   return (

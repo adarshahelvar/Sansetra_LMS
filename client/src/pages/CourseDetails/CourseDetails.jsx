@@ -1,15 +1,21 @@
 import "./CourseDetails.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import api from "../../api/axios";
 
 function CourseDetails() {
   const { id } = useParams();
+
   const [course, setCourse] = useState(null);
+
   const [isEnrolled, setIsEnrolled] = useState(false);
+
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const canManage = user?.role === "admin" || user?.role === "instructor";
 
   const checkEnrollment = async () => {
     try {
@@ -23,7 +29,10 @@ function CourseDetails() {
 
   useEffect(() => {
     fetchCourse();
-    checkEnrollment();
+
+    if (!canManage) {
+      checkEnrollment();
+    }
   }, []);
 
   const fetchCourse = async () => {
@@ -36,9 +45,17 @@ function CourseDetails() {
     }
   };
 
-  if (!course) {
-    return <div className="loading">Loading...</div>;
-  }
+  const publishCourse = async () => {
+    try {
+      await api.put(`/course/publish/${id}`);
+
+      alert("Course published successfully");
+
+      fetchCourse();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handlePurchase = async () => {
     try {
@@ -98,6 +115,10 @@ function CourseDetails() {
     }
   };
 
+  if (!course) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <div className="course-details">
       <div className="container">
@@ -138,20 +159,46 @@ function CourseDetails() {
                 <b>{course.topics?.length}</b>
               </p>
 
+              <p>
+                Status:
+                <b>{course.isPublished ? " Published" : " Draft"}</b>
+              </p>
+
               <h2>₹{course.price}</h2>
 
-              {isEnrolled ? (
-                <button
-                  className="start-btn"
-                  onClick={() => {
-                    navigate(`/learn/${id}`);
-                  }}
-                >
-                  Start Course
-                </button>
-              ) : (
-                <button onClick={handlePurchase}>Buy Course</button>
-              )}
+              <div className="course-buttons">
+                {canManage ? (
+                  <>
+                    <button
+                      className="edit-btn"
+                      onClick={() => {
+                        navigate(`/manage-course/${id}`);
+                      }}
+                    >
+                      Manage Content
+                    </button>
+
+                    {!course.isPublished && (
+                      <button className="publish-btn" onClick={publishCourse}>
+                        Publish
+                      </button>
+                    )}
+                  </>
+                ) : isEnrolled ? (
+                  <button
+                    className="start-btn"
+                    onClick={() => {
+                      navigate(`/learn/${id}`);
+                    }}
+                  >
+                    Start Course
+                  </button>
+                ) : (
+                  <button className="buy-btn" onClick={handlePurchase}>
+                    Buy Course
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

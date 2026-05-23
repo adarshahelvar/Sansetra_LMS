@@ -9,12 +9,22 @@ import {
   getAllCourses,
   getCourseContent,
 } from "../controllers/course.controller.js";
+
 import authMiddleware from "../middleware/auth.middleware.js";
 import roleMiddleware from "../middleware/role.middleware.js";
 
 const router = express.Router();
 
+/* Public */
+
 router.get("/", getAllCourses);
+
+router.get("/content/:courseId", authMiddleware, getCourseContent);
+
+router.get("/:id", getCourseDetails);
+
+/* Admin / Instructor */
+
 router.post(
   "/create",
   authMiddleware,
@@ -36,15 +46,11 @@ router.post(
   addVideo,
 );
 
-router.get("/:id", getCourseDetails);
-
 router.put(
-  "/publish/:id",
+  "/publish/:courseId",
   authMiddleware,
   roleMiddleware("admin", "instructor"),
   publishCourse,
 );
-
-router.get("/content/:courseId", authMiddleware, getCourseContent);
 
 export default router;

@@ -1,7 +1,8 @@
 import Course from "../models/Course.js";
-import asyncHandler from "../utils/asyncHandler.js";
 import Topic from "../models/Topic.js";
 import Video from "../models/Video.js";
+
+import asyncHandler from "../utils/asyncHandler.js";
 
 export const createCourse = asyncHandler(async (req, res) => {
   const { title, subtitle, description, price, thumbnail, level, category } =
@@ -16,11 +17,12 @@ export const createCourse = asyncHandler(async (req, res) => {
     level,
     category,
 
-    instructor: req.user._id,
+    instructor: req.user.id,
   });
 
   res.status(201).json({
     message: "Course created",
+
     course,
   });
 });
@@ -35,14 +37,19 @@ export const createTopic = asyncHandler(async (req, res) => {
     order,
   });
 
-  await Course.findByIdAndUpdate(courseId, {
-    $push: {
-      topics: topic._id,
+  await Course.findByIdAndUpdate(
+    courseId,
+
+    {
+      $push: {
+        topics: topic._id,
+      },
     },
-  });
+  );
 
   res.status(201).json({
     message: "Topic created",
+
     topic,
   });
 });
@@ -70,14 +77,19 @@ export const addVideo = asyncHandler(async (req, res) => {
     isFreePreview,
   });
 
-  await Topic.findByIdAndUpdate(topicId, {
-    $push: {
-      videos: video._id,
+  await Topic.findByIdAndUpdate(
+    topicId,
+
+    {
+      $push: {
+        videos: video._id,
+      },
     },
-  });
+  );
 
   res.status(201).json({
     message: "Video added",
+
     video,
   });
 });
@@ -89,24 +101,35 @@ export const getCourseDetails = asyncHandler(async (req, res) => {
       path: "topics",
 
       options: {
-        sort: { order: 1 },
+        sort: {
+          order: 1,
+        },
       },
 
       populate: {
         path: "videos",
 
         options: {
-          sort: { order: 1 },
+          sort: {
+            order: 1,
+          },
         },
       },
     })
 
-    .populate("instructor", "name email");
+    .populate(
+      "instructor",
+
+      "name email",
+    );
 
   if (!course) {
-    return res.status(404).json({
-      message: "Course not found",
-    });
+    return res
+      .status(404)
+
+      .json({
+        message: "Course not found",
+      });
   }
 
   res.json(course);
@@ -114,7 +137,7 @@ export const getCourseDetails = asyncHandler(async (req, res) => {
 
 export const publishCourse = asyncHandler(async (req, res) => {
   const course = await Course.findByIdAndUpdate(
-    req.params.id,
+    req.params.courseId,
 
     {
       isPublished: true,
@@ -126,15 +149,23 @@ export const publishCourse = asyncHandler(async (req, res) => {
   );
 
   res.json({
-    message: "Course published",
+    success: true,
+
+    message: "Course published successfully",
 
     course,
   });
 });
 
 export const getAllCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find().populate("instructor", "name");
-  console.log(courses);
+  const courses = await Course.find()
+
+    .populate(
+      "instructor",
+
+      "name",
+    );
+
   res.json(courses);
 });
 

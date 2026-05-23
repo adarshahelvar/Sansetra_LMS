@@ -100,6 +100,18 @@ function ManageCourse() {
     }
   };
 
+  const publishCourse = async () => {
+    try {
+      const res = await api.put(`/course/publish/${courseId}`);
+
+      alert(res.data.message);
+    } catch (error) {
+      console.log(error);
+
+      alert("Publishing failed");
+    }
+  };
+
   return (
     <div className="manage-page">
       <div className="container">
@@ -187,6 +199,10 @@ function ManageCourse() {
         ))}
 
         <div className="save-section">
+          <button className="publish-btn" onClick={publishCourse}>
+            Publish Course
+          </button>
+
           <button className="save-course-btn" onClick={saveAllContent}>
             Save Course Content
           </button>

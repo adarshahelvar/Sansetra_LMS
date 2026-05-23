@@ -63,3 +63,44 @@
 
   font-weight: 600;
 }
+
+.course-buttons {
+  display: flex;
+
+  gap: 15px;
+
+  margin-top: 25px;
+}
+
+.edit-btn,
+.publish-btn,
+.buy-btn,
+.start-btn {
+  flex: 1;
+
+  height: 55px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.edit-btn {
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+}
+
+.publish-btn {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.buy-btn {
+  background: linear-gradient(90deg, #0066ff, #00aaff);
+}
+
+.start-btn {
+  background: linear-gradient(90deg, #9333ea, #7c3aed);
+}

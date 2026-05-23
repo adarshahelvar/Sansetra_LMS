@@ -63,7 +63,7 @@ export const getAdminDashboard = asyncHandler(async (req, res) => {
 
   const courseIds = courses.map((course) => course._id);
 
-  const totalStudents = await Enrollment.countDocuments({
+  const enrollments = await Enrollment.find({
     courseId: {
       $in: courseIds,
     },
@@ -75,11 +75,38 @@ export const getAdminDashboard = asyncHandler(async (req, res) => {
     },
   });
 
-  const totalRevenue = payments.reduce(
-    (sum, payment) => sum + (payment.amount || 0),
+  const monthlyRevenue = {};
 
-    0,
-  );
+  payments.forEach((payment) => {
+    const month = new Date(payment.createdAt).toLocaleString(
+      "default",
+
+      {
+        month: "short",
+      },
+    );
+
+    monthlyRevenue[month] =
+      (monthlyRevenue[month] || 0) + (payment.amount || 0);
+  });
+
+  const courseAnalytics = courses.map((course) => {
+    const students = enrollments.filter(
+      (e) => e.courseId.toString() === course._id.toString(),
+    );
+
+    return {
+      _id: course._id,
+
+      title: course.title,
+
+      students: students.length,
+
+      price: course.price,
+
+      status: course.isPublished ? "Published" : "Draft",
+    };
+  });
 
   res.json({
     totalCourses: courses.length,
@@ -88,10 +115,16 @@ export const getAdminDashboard = asyncHandler(async (req, res) => {
 
     draftCourses: courses.filter((c) => !c.isPublished).length,
 
-    totalStudents,
+    totalStudents: enrollments.length,
 
-    totalRevenue,
+    totalRevenue: payments.reduce(
+      (sum, p) => sum + (p.amount || 0),
 
-    courses,
+      0,
+    ),
+
+    monthlyRevenue,
+
+    courseAnalytics,
   });
 });

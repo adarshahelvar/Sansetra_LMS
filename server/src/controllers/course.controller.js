@@ -192,3 +192,11 @@ export const getCourseContent = asyncHandler(async (req, res) => {
     topics,
   });
 });
+
+export const deleteCourse = asyncHandler(async (req, res) => {
+  await Course.findByIdAndDelete(req.params.courseId);
+
+  res.json({
+    message: "Course deleted successfully",
+  });
+});

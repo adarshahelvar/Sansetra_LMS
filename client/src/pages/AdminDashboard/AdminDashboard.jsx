@@ -1,7 +1,9 @@
 import "./AdminDashboard.css";
 
 import { useEffect, useState } from "react";
+
 import api from "../../api/axios";
+
 import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
@@ -23,8 +25,18 @@ function AdminDashboard() {
     }
   };
 
+  const deleteCourse = async (id) => {
+    try {
+      await api.delete(`/course/delete/${id}`);
+
+      loadDashboard();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!data) {
-    return <div className="loading">Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -58,26 +70,48 @@ function AdminDashboard() {
           </div>
         </div>
 
+        <div className="monthly-section">
+          <h3>Monthly Revenue</h3>
+
+          <div className="monthly-grid">
+            {Object.entries(data.monthlyRevenue).map(([month, value]) => (
+              <div key={month} className="month-card">
+                <h5>{month}</h5>
+
+                <h2>₹{value}</h2>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="course-table">
-          <h3>My Courses</h3>
+          <h3>Course Analytics</h3>
 
           <table>
             <thead>
               <tr>
                 <th>Course</th>
 
+                <th>Students</th>
+
                 <th>Status</th>
+
+                <th>Price</th>
 
                 <th>Action</th>
               </tr>
             </thead>
 
             <tbody>
-              {data.courses.map((course) => (
+              {data.courseAnalytics.map((course) => (
                 <tr key={course._id}>
                   <td>{course.title}</td>
 
-                  <td>{course.isPublished ? "Published" : "Draft"}</td>
+                  <td>{course.students}</td>
+
+                  <td>{course.status}</td>
+
+                  <td>₹{course.price}</td>
 
                   <td>
                     <button
@@ -85,7 +119,16 @@ function AdminDashboard() {
                         navigate(`/course/${course._id}`);
                       }}
                     >
-                      View
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => {
+                        deleteCourse(course._id);
+                      }}
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>

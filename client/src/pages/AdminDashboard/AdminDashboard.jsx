@@ -20,9 +20,19 @@ function AdminDashboard() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [deleteStep, setDeleteStep] = useState(1);
+  const [users, setUsers] = useState([]);
+
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [showRoleModal, setShowRoleModal] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const [newRole, setNewRole] = useState("");
 
   useEffect(() => {
     loadDashboard();
+
+    loadUsers();
   }, []);
 
   const loadDashboard = async () => {
@@ -30,6 +40,62 @@ function AdminDashboard() {
       const res = await api.get("/user/admin-dashboard");
 
       setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadUsers = async () => {
+    try {
+      setLoadingUsers(true);
+
+      const res = await api.get("/user/all-users");
+
+      setUsers(res.data.users);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const openRoleModal = (user) => {
+    setSelectedUser(user);
+
+    setNewRole(user.role);
+
+    setShowRoleModal(true);
+  };
+
+  const changeRole = async () => {
+    try {
+      await api.put(
+        `/user/change-role/${selectedUser._id}`,
+
+        {
+          role: newRole,
+        },
+      );
+
+      setShowRoleModal(false);
+
+      loadUsers();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    const confirmDelete = window.confirm("Delete user?");
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      await api.delete(`/user/delete-user/${id}`);
+
+      loadUsers();
     } catch (error) {
       console.log(error);
     }
@@ -272,7 +338,104 @@ function AdminDashboard() {
             </div>
           </div>
         )}
+        <div className="users-table">
+          <h3>Users Management</h3>
+
+          {loadingUsers ? (
+            <p>Loading users...</p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+
+                  <th>Email</th>
+
+                  <th>Role</th>
+
+                  <th>Courses</th>
+
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>{user.name}</td>
+
+                    <td>{user.email}</td>
+
+                    <td>{user.role}</td>
+
+                    <td>{user.purchasedCourses}</td>
+
+                    <td>
+                      <button
+                        className="role-btn"
+                        onClick={() => {
+                          openRoleModal(user);
+                        }}
+                      >
+                        Change Role
+                      </button>
+
+                      <button
+                        className="user-delete-btn"
+                        onClick={() => {
+                          deleteUser(user._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
+      {showRoleModal && (
+        <div className="delete-overlay">
+          <div className="delete-modal">
+            <h2>Change Role</h2>
+
+            <p>
+              Current Role:
+              <b>{selectedUser?.role}</b>
+            </p>
+
+            <select
+              value={newRole}
+              onChange={(e) => {
+                setNewRole(e.target.value);
+              }}
+            >
+              <option value="student">Student</option>
+
+              <option value="instructor">Instructor</option>
+
+              <option value="admin">Admin</option>
+            </select>
+
+            <div className="modal-buttons">
+              <button
+                className="cancel-btn"
+                onClick={() => {
+                  setShowRoleModal(false);
+                }}
+              >
+                Cancel
+              </button>
+
+              <button className="confirm-delete-btn" onClick={changeRole}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import Enrollment from "../models/Enrollment.js";
 import Payment from "../models/Payment.js";
 import Course from "../models/Course.js";
+import User from "../models/User.js";
 
 export const continueWatching = asyncHandler(async (req, res) => {
   const courses = await Progress.find({
@@ -53,7 +54,6 @@ export const myCourses = asyncHandler(async (req, res) => {
     courses,
   });
 });
-
 
 export const checkEnrollment = asyncHandler(async (req, res) => {
   const enrollment = await Enrollment.findOne({
@@ -140,3 +140,56 @@ export const getAdminDashboard = asyncHandler(async (req, res) => {
   });
 });
 
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find()
+
+    .select("-password");
+
+  const usersWithCourses = await Promise.all(
+    users.map(async (user) => {
+      const purchasedCourses = await Enrollment.countDocuments({
+        studentId: user._id,
+      });
+
+      return {
+        ...user.toObject(),
+
+        purchasedCourses,
+      };
+    }),
+  );
+
+  res.json({
+    success: true,
+
+    users: usersWithCourses,
+  });
+});
+
+export const changeUserRole = asyncHandler(async (req, res) => {
+  const { role } = req.body;
+
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+
+    { role },
+
+    { new: true },
+  );
+
+  res.json({
+    success: true,
+
+    user,
+  });
+});
+
+export const deleteUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+
+  res.json({
+    success: true,
+
+    message: "User deleted",
+  });
+});

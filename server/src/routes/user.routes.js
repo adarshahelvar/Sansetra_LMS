@@ -8,6 +8,9 @@ import {
   continueWatching,
   getAdminDashboard,
   myCourses,
+  getAllUsers,
+  changeUserRole,
+  deleteUser,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -41,6 +44,34 @@ router.get(
   getAdminDashboard,
 );
 
+router.get(
+  "/all-users",
 
+  authMiddleware,
+
+  roleMiddleware("admin", "instructor"),
+
+  getAllUsers,
+);
+
+router.put(
+  "/change-role/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin", "instructor"),
+
+  changeUserRole,
+);
+
+router.delete(
+  "/delete-user/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin"),
+
+  deleteUser,
+);
 
 export default router;

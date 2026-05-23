@@ -200,3 +200,72 @@
 
   color: white;
 }
+
+.users-table {
+  margin-top: 50px;
+
+  background: #071225;
+
+  padding: 30px;
+
+  border-radius: 20px;
+}
+
+.users-table table {
+  width: 100%;
+
+  margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+  padding: 15px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.role-btn {
+  background: #2563eb;
+
+  border: none;
+
+  padding: 8px 15px;
+
+  border-radius: 10px;
+
+  color: white;
+
+  margin-right: 10px;
+}
+
+.user-delete-btn {
+  background: #dc2626;
+
+  border: none;
+
+  padding: 8px 15px;
+
+  border-radius: 10px;
+
+  color: white;
+}
+
+.delete-modal select {
+  width: 100%;
+
+  height: 55px;
+
+  margin-top: 20px;
+
+  margin-bottom: 20px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #1e293b;
+
+  color: white;
+
+  padding: 10px;
+}

@@ -17,6 +17,11 @@ import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import AdminRoute from "../components/ProtectedRoute/AdminRoute";
 import NotFound from "../pages/NotFound/NotFound";
+import UserProfile from "../pages/UserProfile/UserProfile";
+import SAPJobs from "../pages/SAPJobs/SAPJobs";
+import Projects from "../pages/Projects/Projects";
+import Community from "../pages/Community/Community";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 function AppRoutes() {
   return (
@@ -87,6 +92,11 @@ function AppRoutes() {
           />
         </Route>
         <Route path="*" element={<NotFound />} />
+        <Route path="/jobs" element={<SAPJobs />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </BrowserRouter>
   );

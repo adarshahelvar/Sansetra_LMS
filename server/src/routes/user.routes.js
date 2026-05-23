@@ -11,6 +11,7 @@ import {
   getAllUsers,
   changeUserRole,
   deleteUser,
+  getPaymentHistory,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -74,4 +75,13 @@ router.delete(
   deleteUser,
 );
 
+router.get(
+  "/payment-history",
+
+  authMiddleware,
+
+  roleMiddleware("admin", "instructor"),
+
+  getPaymentHistory,
+);
 export default router;

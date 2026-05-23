@@ -269,3 +269,26 @@
 
   padding: 10px;
 }
+
+.payment-table {
+  margin-top: 50px;
+
+  background: #071225;
+
+  padding: 30px;
+
+  border-radius: 20px;
+}
+
+.payment-table table {
+  width: 100%;
+
+  margin-top: 20px;
+}
+
+.payment-table th,
+.payment-table td {
+  padding: 15px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}

@@ -9,39 +9,34 @@ function AdminDashboard() {
 
   const [data, setData] = useState(null);
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
-  const [verificationCode, setVerificationCode] = useState("");
-
-  const [userCode, setUserCode] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [deleteStep, setDeleteStep] = useState(1);
   const [users, setUsers] = useState([]);
+  const [payments, setPayments] = useState([]);
 
   const [loadingUsers, setLoadingUsers] = useState(false);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [userCode, setUserCode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [deleteStep, setDeleteStep] = useState(1);
+
   const [showRoleModal, setShowRoleModal] = useState(false);
-
   const [selectedUser, setSelectedUser] = useState(null);
-
   const [newRole, setNewRole] = useState("");
 
   useEffect(() => {
     loadDashboard();
-
     loadUsers();
+    loadPayments();
   }, []);
 
   const loadDashboard = async () => {
     try {
       const res = await api.get("/user/admin-dashboard");
-
       setData(res.data);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -52,43 +47,45 @@ function AdminDashboard() {
       const res = await api.get("/user/all-users");
 
       setUsers(res.data.users);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     } finally {
       setLoadingUsers(false);
     }
   };
 
+  const loadPayments = async () => {
+    try {
+      const res = await api.get("/user/payment-history");
+
+      setPayments(res.data.payments);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const openRoleModal = (user) => {
     setSelectedUser(user);
-
     setNewRole(user.role);
-
     setShowRoleModal(true);
   };
 
   const changeRole = async () => {
     try {
-      await api.put(
-        `/user/change-role/${selectedUser._id}`,
-
-        {
-          role: newRole,
-        },
-      );
+      await api.put(`/user/change-role/${selectedUser._id}`, {
+        role: newRole,
+      });
 
       setShowRoleModal(false);
 
       loadUsers();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const deleteUser = async (id) => {
-    const confirmDelete = window.confirm("Delete user?");
-
-    if (!confirmDelete) {
+    if (!window.confirm("Delete this user?")) {
       return;
     }
 
@@ -96,8 +93,8 @@ function AdminDashboard() {
       await api.delete(`/user/delete-user/${id}`);
 
       loadUsers();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -130,8 +127,8 @@ function AdminDashboard() {
       setShowDeleteModal(false);
 
       loadDashboard();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -144,47 +141,47 @@ function AdminDashboard() {
       <div className="container">
         <h1>Admin Dashboard</h1>
 
+        {/* Cards */}
+
         <div className="dashboard-cards">
           <div className="card-box">
             <h5>Courses</h5>
-
             <h2>{data.totalCourses}</h2>
           </div>
 
           <div className="card-box">
             <h5>Students</h5>
-
             <h2>{data.totalStudents}</h2>
           </div>
 
           <div className="card-box">
             <h5>Published</h5>
-
             <h2>{data.publishedCourses}</h2>
           </div>
 
           <div className="card-box">
             <h5>Revenue</h5>
-
             <h2>₹{data.totalRevenue}</h2>
           </div>
         </div>
+
+        {/* Monthly Revenue */}
 
         <div className="monthly-section">
           <h3>Monthly Revenue</h3>
 
           <div className="monthly-grid">
-            {Object.entries(data.monthlyRevenue)
+            {Object.entries(data.monthlyRevenue).map(([month, value]) => (
+              <div key={month} className="month-card">
+                <h5>{month}</h5>
 
-              .map(([month, value]) => (
-                <div key={month} className="month-card">
-                  <h5>{month}</h5>
-
-                  <h2>₹{value}</h2>
-                </div>
-              ))}
+                <h2>₹{value}</h2>
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Course Analytics */}
 
         <div className="course-table">
           <h3>Course Analytics</h3>
@@ -204,11 +201,8 @@ function AdminDashboard() {
               {data.courseAnalytics.map((course) => (
                 <tr key={course._id}>
                   <td>{course.title}</td>
-
                   <td>{course.students}</td>
-
                   <td>{course.status}</td>
-
                   <td>₹{course.price}</td>
 
                   <td>
@@ -235,126 +229,21 @@ function AdminDashboard() {
           </table>
         </div>
 
-        {showDeleteModal && (
-          <div className="delete-overlay">
-            <div className="delete-modal">
-              <h2>Delete Course ⚠️</h2>
+        {/* Users */}
 
-              {/* STEP 1 */}
-
-              {deleteStep === 1 && (
-                <>
-                  <p>Are you sure you want to delete this course?</p>
-
-                  <div className="modal-buttons">
-                    <button
-                      className="cancel-btn"
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      className="confirm-delete-btn"
-                      onClick={() => {
-                        setDeleteStep(2);
-                      }}
-                    >
-                      Continue
-                    </button>
-                  </div>
-                </>
-              )}
-
-              {/* STEP 2 */}
-
-              {deleteStep === 2 && (
-                <>
-                  <p>Deleted courses cannot be recovered.</p>
-
-                  <p>Do you still want to continue?</p>
-
-                  <div className="modal-buttons">
-                    <button
-                      className="cancel-btn"
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      className="confirm-delete-btn"
-                      onClick={() => {
-                        setDeleteStep(3);
-                      }}
-                    >
-                      Yes Continue
-                    </button>
-                  </div>
-                </>
-              )}
-
-              {/* STEP 3 */}
-
-              {deleteStep === 3 && (
-                <>
-                  <p>Enter this verification code:</p>
-
-                  <div className="verification-box">{verificationCode}</div>
-
-                  <input
-                    placeholder="Enter verification code"
-                    value={userCode}
-                    onChange={(e) => {
-                      setUserCode(e.target.value);
-                    }}
-                  />
-
-                  {errorMessage && <p className="error-text">{errorMessage}</p>}
-
-                  <div className="modal-buttons">
-                    <button
-                      className="cancel-btn"
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      className="confirm-delete-btn"
-                      onClick={deleteCourse}
-                    >
-                      Delete Course
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
         <div className="users-table">
           <h3>Users Management</h3>
 
           {loadingUsers ? (
-            <p>Loading users...</p>
+            <p>Loading...</p>
           ) : (
             <table>
               <thead>
                 <tr>
                   <th>Name</th>
-
                   <th>Email</th>
-
                   <th>Role</th>
-
                   <th>Courses</th>
-
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -363,11 +252,8 @@ function AdminDashboard() {
                 {users.map((user) => (
                   <tr key={user._id}>
                     <td>{user.name}</td>
-
                     <td>{user.email}</td>
-
                     <td>{user.role}</td>
-
                     <td>{user.purchasedCourses}</td>
 
                     <td>
@@ -395,47 +281,41 @@ function AdminDashboard() {
             </table>
           )}
         </div>
-      </div>
-      {showRoleModal && (
-        <div className="delete-overlay">
-          <div className="delete-modal">
-            <h2>Change Role</h2>
 
-            <p>
-              Current Role:
-              <b>{selectedUser?.role}</b>
-            </p>
+        {/* Payments */}
 
-            <select
-              value={newRole}
-              onChange={(e) => {
-                setNewRole(e.target.value);
-              }}
-            >
-              <option value="student">Student</option>
+        <div className="payment-table">
+          <h3>Payment History</h3>
 
-              <option value="instructor">Instructor</option>
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Amount</th>
+                <th>Transaction</th>
+                <th>Date</th>
+              </tr>
+            </thead>
 
-              <option value="admin">Admin</option>
-            </select>
+            <tbody>
+              {payments.map((payment) => (
+                <tr key={payment._id}>
+                  <td>{payment.studentId?.name}</td>
 
-            <div className="modal-buttons">
-              <button
-                className="cancel-btn"
-                onClick={() => {
-                  setShowRoleModal(false);
-                }}
-              >
-                Cancel
-              </button>
+                  <td>{payment.courseId?.title}</td>
 
-              <button className="confirm-delete-btn" onClick={changeRole}>
-                Confirm
-              </button>
-            </div>
-          </div>
+                  <td>₹{payment.amount}</td>
+
+                  <td>{payment.paymentId}</td>
+
+                  <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 }

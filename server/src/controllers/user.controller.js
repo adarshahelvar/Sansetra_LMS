@@ -193,3 +193,39 @@ export const deleteUser = asyncHandler(async (req, res) => {
     message: "User deleted",
   });
 });
+
+export const getPaymentHistory = asyncHandler(async (req, res) => {
+  const courses = await Course.find({
+    instructor: req.user.id,
+  });
+
+  const courseIds = courses.map((course) => course._id);
+
+  const payments = await Payment.find({
+    courseId: {
+      $in: courseIds,
+    },
+  })
+
+    .populate(
+      "studentId",
+
+      "name email",
+    )
+
+    .populate(
+      "courseId",
+
+      "title",
+    )
+
+    .sort({
+      createdAt: -1,
+    });
+
+  res.json({
+    success: true,
+
+    payments,
+  });
+});

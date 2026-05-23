@@ -54,12 +54,29 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 
   console.log("Student:", studentId);
 
+  // await Payment.create({
+  //   studentId,
+  //   courseId,
+  //   orderId: razorpay_order_id,
+  //   paymentId: razorpay_payment_id,
+  //   signature: razorpay_signature,
+  //   status: "success",
+  // });
+  const course = await Course.findById(courseId);
+
   await Payment.create({
-    studentId,
+    studentId: req.user._id,
+
     courseId,
+
+    amount: course.price,
+
     orderId: razorpay_order_id,
+
     paymentId: razorpay_payment_id,
+
     signature: razorpay_signature,
+
     status: "success",
   });
 

@@ -90,13 +90,13 @@ function AppRoutes() {
               </AdminRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/jobs" element={<SAPJobs />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/about" element={<AboutUs />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/jobs" element={<SAPJobs />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </BrowserRouter>
   );
